@@ -1,5 +1,5 @@
 pipeline {
-  agent any
+  agent { label 'docker' }
 
   environment {
     AWS_REGION = "eu-north-1"
