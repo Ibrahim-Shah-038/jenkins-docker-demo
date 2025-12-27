@@ -1,10 +1,58 @@
-version: "3.8"
 services:
   backend:
-    build: ./ecommerce
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: django_backend
+    restart: unless-stopped
+    environment:
+      - DEBUG=0
+      - SECRET_KEY=django-insecure-replace-me
+      - ALLOWED_HOSTS=localhost,127.0.0.1,backend,frontend,prometheus,grafana
+    volumes:
+      - ./ecommerce/ecommerce_backend:/app
     ports:
       - "8000:8000"
+
   frontend:
-    build: ./frontend
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: react_frontend
+    restart: unless-stopped
     ports:
-      - "3000:80"
+      - "3000:80"  # maps host:3000 to container nginx:80
+    depends_on:
+      - backend
+
+  prometheus:
+    build:
+      context: .
+      dockerfile: Dockerfile.prometheus
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    depends_on:
+      - backend
+      - frontend
+
+  grafana:
+    build:
+      context: .
+      dockerfile: Dockerfile.grafana
+    container_name: grafana
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+    ports:
+      - "3001:3000"
+    depends_on:
+      - prometheus
+
+# Networks/volumes can be added as needed
+

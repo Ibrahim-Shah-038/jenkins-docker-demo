@@ -1,0 +1,13 @@
+Django>=4.2
+# Django REST framework
+djangorestframework>=3.14
+# JWT authentication for DRF
+djangorestframework-simplejwt>=5.0
+# CORS headers
+django-cors-headers>=4.0
+
+# Image handling
+Pillow>=9.0
+
+gunicorn
+psycopg2-binary

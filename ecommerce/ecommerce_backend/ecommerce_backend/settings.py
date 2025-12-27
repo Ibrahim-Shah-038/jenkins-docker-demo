@@ -23,9 +23,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-4k73y9gu^qjh0&jt=6bipotsh3@0nq!z4qztz_t6m*!$wasx)c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+import os
+DEBUG = os.environ.get('DEBUG', '1') == '1'
 
-ALLOWED_HOSTS = []
+# Allow setting ALLOWED_HOSTS via environment variable (comma-separated).
+# Default includes localhost and common compose service names used in this repo.
+ALLOWED_HOSTS = os.environ.get(
+    'ALLOWED_HOSTS', 'localhost,127.0.0.1,backend,frontend,prometheus,grafana'
+).split(',')
+ALLOWED_HOSTS = [h.strip() for h in ALLOWED_HOSTS if h.strip()]
 
 
 # Application definition

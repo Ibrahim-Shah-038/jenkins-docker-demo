@@ -1,0 +1,9 @@
+# Dockerfile.prometheus
+# Thin wrapper around official Prometheus image that copies the config
+FROM prom/prometheus:latest
+LABEL maintainer="GitHub Copilot"
+COPY prometheus.yml /etc/prometheus/prometheus.yml
+EXPOSE 9090
+# The official prom/prometheus image already defines ENTRYPOINT as /bin/prometheus
+# so provide only the CLI flags here (they'll be appended to the ENTRYPOINT).
+CMD ["--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.path=/prometheus"]

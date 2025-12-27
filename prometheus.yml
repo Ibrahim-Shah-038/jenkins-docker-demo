@@ -1,0 +1,10 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'django'
+    # By default Prometheus scrapes /metrics. If you want Django metrics, add instrumentation
+    # (e.g., django-prometheus or prometheus-client) so the app exposes /metrics.
+    static_configs:
+      - targets: ['backend:8000']

@@ -1,0 +1,6 @@
+# Dockerfile.grafana
+FROM grafana/grafana:9.5.5
+LABEL maintainer="GitHub Copilot"
+# Copy provisioning so Grafana auto-adds Prometheus datasource at startup
+COPY grafana/provisioning /etc/grafana/provisioning
+EXPOSE 3000

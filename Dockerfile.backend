@@ -1,0 +1,26 @@
+# Dockerfile.backend
+FROM python:3.11-slim
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+WORKDIR /app
+
+# Install system deps (kept minimal)
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends build-essential gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python deps
+COPY ecommerce/ecommerce_backend/requirements.txt /tmp/requirements.txt
+RUN pip install --upgrade pip && pip install -r /tmp/requirements.txt
+
+# Copy project files
+COPY ecommerce/ecommerce_backend /app
+
+# Add entrypoint to run migrations and start gunicorn
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+EXPOSE 8000
+CMD ["/entrypoint.sh"]
