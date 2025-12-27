@@ -42,7 +42,7 @@ If your pipeline requires a node labeled `docker` (recommended for running Docke
 Programmatic option (Configuration as Code + auto-service)
 
 - You can automate node creation by enabling Configuration as Code (JCasC) plugin and pointing Jenkins to the included YAML `jenkins/casc/docker-agent.yml`.
-  - Install the **Configuration as Code** plugin in Jenkins.
+  - Install the **Configuration as Code**s plugin in Jenkins.
   - In Jenkins: Manage Jenkins → Configuration as Code → Set the configuration source. You can either paste the contents of `jenkins/casc/docker-agent.yml` or point `CASC_JENKINS_CONFIG` to the raw URL of that file.
   - After Jenkins loads the YAML, the `docker-agent` node will be present and ready to accept JNLP connections.
 
