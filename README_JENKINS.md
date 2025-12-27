@@ -44,7 +44,7 @@ Programmatic option (Configuration as Code + auto-service)
 - You can automate node creation by enabling Configuration as Code (JCasC) plugin and pointing Jenkins to the included YAML `jenkins/casc/docker-agent.yml`.
   - Install the **Configuration as Code**s plugin in Jenkins.
   - In Jenkins: Manage Jenkins → Configuration as Code → Set the configuration source. You can either paste the contents of `jenkins/casc/docker-agent.yml` or point `CASC_JENKINS_CONFIG` to the raw URL of that file.
-  - After Jenkins loads the YAML, the `docker-agent` node will be present and ready to accept JNLP connections.s
+  - After Jenkins loads the YAML, the `docker-agent` node will be present and ready to accept JNLP connections.ss
 
 - To retrieve the agent secret programmatically, use the Groovy script `jenkins/scripts/get_docker_agent_secret.groovy`.
   - Paste it into **Manage Jenkins → Script Console** and run; it will create the node (if missing) and print the JNLP secret for the agent.
