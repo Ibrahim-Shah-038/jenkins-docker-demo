@@ -24,7 +24,37 @@ This file explains the minimum Jenkins configuration and credentials required fo
 
 ## Webhook (GitHub)
 - Configure a webhook on your GitHub repo `https://github.com/Ibrahim-Shah-038/jenkins-docker-demo` to POST to your Jenkins (via your ngrok URL) on push events.
+- Use the path `/github-webhook/` (e.g., `https://<your-ngrok-url>/github-webhook/`) and **Content type: application/json**.
+- If you configured a secret in the GitHub webhook, make sure the same secret is configured in Jenkins (or test webhooks using the same secret).
 - If using a multibranch pipeline, Jenkins will detect branches automatically when scanning.
+
+### Webhook debugging steps
+1) Verify ngrok is running and the public URL matches the webhook URL in GitHub. ngrok URLs change after restart.
+2) In GitHub: Settings → Webhooks → Recent Deliveries. Inspect the latest deliveries:
+   - If Delivery shows **Failed**: read Response headers and body for HTTP status.
+   - If it shows 404 or 500, check the webhook path and Jenkins system logs.
+3) Run the included test script from your workstation to simulate GitHub sending a push event:
+
+```bash
+chmod +x ./scripts/test_webhook.sh
+./scripts/test_webhook.sh https://<your-ngrok-url>/github-webhook/ [<optional-secret>]
+```
+
+If the script gets a 200/OK response, Jenkins received the webhook; otherwise check ngrok's web interface (http://127.0.0.1:4040) to see request details and responses.
+
+4) Enable detailed logging in Jenkins for GitHub webhooks:
+   - Manage Jenkins → System Log → Add new Log Recorder.
+   - Name: `github-webhook`.
+   - Add Loggers: `org.jenkinsci.plugins.github` and `org.jenkinsci.plugins.github.webhook` at level `FINE`.
+   - Re-send a test webhook and watch System Log for incoming requests and errors.
+
+5) If repo used to trigger builds but no longer does:
+   - Re-send a delivery in GitHub (Recent Deliveries → Redeliver) and watch Jenkins System Log and job queue.
+   - In Multibranch Pipelines: on the job page click **Scan Repository Now** to force detection; also verify branch indexing triggers are enabled.
+
+6) Verify your agent is online and that the job isn't queued waiting for a label (Manage Nodes and Clouds → ensure `docker-agent` is online and labelled `docker`).
+
+If you'd like, I can add a tiny curl-based health check to your ngrok URL that you can run remotely to confirm webhook reachability; tell me and I'll add it.
 
 ## Adding a Docker agent node (recommended)
 If your pipeline requires a node labeled `docker` (recommended for running Docker build steps) follow these steps.
