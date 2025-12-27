@@ -1,0 +1,14 @@
+jenkins:
+  nodes:
+    - permanent:
+        name: "docker-agent"
+        description: "Agent for docker tasks (created by JCasC)"
+        remoteFS: "/home/jenkins"
+        labels: "docker"
+        executors: 2
+        launchTimeoutSeconds: 60
+        launcher:
+          jnlp:
+            workDirSettings:
+              disabled: false
+            vmargs: "-Djava.awt.headless=true"
