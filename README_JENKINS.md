@@ -28,7 +28,7 @@ This file explains the minimum Jenkins configuration and credentials required fo
 - If you configured a secret in the GitHub webhook, make sure the same secret is configured in Jenkins (or test webhooks using the same secret).
 - If using a multibranch pipeline, Jenkins will detect branches automatically when scanning.
 
-### Webhook debugging steps
+### Webhook debugging stepss
 1) Verify ngrok is running and the public URL matches the webhook URL in GitHub. ngrok URLs change after restart.
 2) In GitHub: Settings → Webhooks → Recent Deliveries. Inspect the latest deliveries:
    - If Delivery shows **Failed**: read Response headers and body for HTTP status.
