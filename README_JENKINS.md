@@ -76,8 +76,7 @@ Programmatic option (Configuration as Code + auto-service)
   - In Jenkins: Manage Jenkins → Configuration as Code → Set the configuration source. You can either paste the contents of `jenkins/casc/docker-agent.yml` or point `CASC_JENKINS_CONFIG` to the raw URL of that file.
   - After Jenkins loads the YAML, the `docker-agent` node will be present and ready to accept JNLP connections.sss
 
-- To retrieve the agent secret programmatically, use the Groovy script `jenkins/scripts/get_docker_agent_secret.groovy`.
-  - Paste it into **Manage Jenkins → Script Console** and run; it will create the node (if missing) and print the JNLP secret for the agent.
+- To retrieve the agent secret, open the node page in Jenkins (Manage Nodes → docker-agent) and copy the agent secret from the UI. You can also create the node declaratively with JCasC or use the CLI/REST API to obtain the secret.
 
 - On the EC2 host you can install the agent as a systemd service so it starts automatically using the secret. Use the included installer script:
 

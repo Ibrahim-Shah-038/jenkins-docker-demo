@@ -14,30 +14,11 @@ pipeline {
   }
 
   stages {
-    stage('Diagnostics') {
-      steps {
-        script {
-          // Print high-level cause information and environment for debugging webhook triggers
-          def causes = []
-          try {
-            causes = currentBuild.rawBuild.getCauses().collect { it.toString() }
-          } catch (err) {
-            causes = ["could not read causes: ${err}"]
-          }
-          echo "BUILD CAUSES: ${causes.join(', ')}"
-          echo "GIT_BRANCH: ${env.GIT_BRANCH}"
-          echo "REPO_URL: ${env.REPO_URL}"
-          // Print a short system check so we know the agent can run shell steps
-          sh 'echo --- uname ---; uname -a || true'
-          sh 'echo --- env ---; env | sort || true'
-        }
-      }
-    }
-
     stage('Checkout') {
       steps {
         echo "Checking out ${env.GIT_BRANCH}"
-        checkout([$class: 'GitSCM', branches: [[name: "*/${env.GIT_BRANCH}"]], userRemoteConfigs: [[url: env.REPO_URL]]])
+        // Use built-in git step to avoid adding extra remotes in job config
+        git branch: "${env.GIT_BRANCH}", url: "${env.REPO_URL}"
       }
     }
 
